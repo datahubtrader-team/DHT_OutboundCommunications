@@ -1,0 +1,162 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Contact service",
+        "description": "This service handles contacts through the use of the contact API and persist the data into a MongoDB storage",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:5000",
+    "basePath": "/",
+    "tags": [{
+        "name": "Contacts API",
+        "description": ""
+    }],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/contacts": {
+            "post": {
+                "tags": [
+                    "Create a new contact"
+                ],
+                "description": "Create new contact in service",
+                "parameters": [{
+                    "name": "contact",
+                    "in": "body",
+                    "description": "Contact that we want to create",
+                    "schema": {
+                        "$ref": "#/definitions/Contact"
+                    }
+                }],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New contact is created",
+                        "schema": {
+                            "$ref": "#/definitions/Contact"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Retrieve all contacts"
+                ],
+                "summary": "Get all contacts in service",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Contacts"
+                        }
+                    }
+                }
+            }
+        },
+        "/contacts/{contactId}": {
+            "parameters": [{
+                "name": "contactId",
+                "in": "path",
+                "required": true,
+                "description": "ID of contact that we want to find",
+                "type": "string"
+            }],
+            "get": {
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "Get contact with given ID",
+                "responses": {
+                    "200": {
+                        "description": "Contact is found",
+                        "schema": {
+                            "$ref": "#/definitions/Contact"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete contact with given ID",
+                "tags": [
+                    "Contacts"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contact is deleted",
+                        "schema": {
+                            "$ref": "#/definitions/Contact"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update contact with give ID",
+                "tags": [
+                    "Contacts"
+                ],
+                "parameters": [{
+                    "name": "contact",
+                    "in": "body",
+                    "description": "Contact with new values of properties",
+                    "schema": {
+                        "$ref": "#/definitions/Contact"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Contact is updated",
+                        "schema": {
+                            "$ref": "#/definitions/Contact"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Contact": {
+            "required": [
+                "firstName",
+                "email"
+            ],
+            "properties": {
+                "firstName": {
+                    "type": "string",
+                    "uniqueItems": true
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
+                "service": {
+                    "type": "string"
+                }
+            }
+        },
+        "Contacts": {
+            "type": "array",
+            "$ref": "#/definitions/Contact"
+        }
+    }
+}

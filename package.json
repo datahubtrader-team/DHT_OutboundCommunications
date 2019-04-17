@@ -1,0 +1,24 @@
+{
+  "name": "dht_outboundcommunications",
+  "version": "1.0.0",
+  "description": "This service deals with sending outbound communications to customers.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datahubtrader-team/DHT_OutboundCommunications.git"
+  },
+  "author": "DrJay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/datahubtrader-team/DHT_OutboundCommunications/issues"
+  },
+  "homepage": "https://github.com/datahubtrader-team/DHT_OutboundCommunications#readme",
+  "dependencies": {
+    "opn": "^6.0.0",
+    "rest-facade": "^1.11.0",
+    "swagger-ui-express": "^4.0.2"
+  }
+}

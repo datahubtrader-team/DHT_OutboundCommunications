@@ -4,6 +4,9 @@ const statusUpdate = require('../Enums/enum.js');
 var amqp = require('amqplib/callback_api');
 
 var rest = require('rest-facade');
+require('dotenv').config()
+
+
 
 // Create and Save a new Outbound communication
 exports.create = (req, res) => {
@@ -26,12 +29,16 @@ exports.create = (req, res) => {
 
     });
 
+
+
+
     // Save Outbound communication in the database
     outboundcommunication.save()
         .then(data => {
             res.send(data);
             //res.end("Test");
             addMsgOntoQueue(outboundcommunication.toString());
+            sendEmail();
             //console.log(res.body);
         }).catch(err => {
             res.status(500).send({
@@ -101,6 +108,35 @@ function addMsgOntoQueue(outbound){
             conn.close();
         }, 500);
     });
+}
+
+
+function sendEmail(){
+    
+    var request = require("request");
+var test = "Basic " +process.env.APIKEY;
+var options = { method: 'POST',
+  url: 'https://api.mailjet.com/v3.1/send',
+  headers: 
+   { 'Postman-Token': '1078ab89-b4e0-405e-8e35-b50fb8c6d793',
+     'cache-control': 'no-cache',
+     Authorization: test,
+     'Content-Type': 'application/json' },
+  body: 
+   { Messages: 
+      [ { From: { Email: 'info@hammsolutions.co.uk', Name: 'Me' },
+          To: [ { Email: 'julianhamm1@gmail.com', Name: 'You' } ],
+          Subject: 'My first Mailjet Email!',
+          TextPart: 'Greetings from Mailjet!',
+          HTMLPart: '<h3>Dear passenger 1, welcome to <a href="https://www.mailjet.com/">Mailjet!</a></h3><br />May the delivery force be with you!' } ] },
+  json: true };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+
 }
 
 // Retrieve and return all Outbound communications from the database.

@@ -3,7 +3,7 @@ This service deals with sending outbound communications to customers.
 
 A full Restful CRUD API for managing outboundcommunications written in Node.js, Express and MongoDB.
 
-![Outbound communications framework architecture](Micronox-ContactService.jpeg)
+![Outbound communications framework architecture](Micronox-OutboundCommunication.jpeg)
 
 ## Steps to setup the service
 

@@ -95,9 +95,10 @@ exports.create = (req, res) => {
 };
 
 var outbound;
-function addMsgOntoQueue(outbound){
-     //Connect to Rabbit MQ and publish msg onto the queue
-     amqp.connect('amqp://localhost', function(err, conn) {
+
+function addMsgOntoQueue(outbound) {
+    //Connect to Rabbit MQ and publish msg onto the queue
+    amqp.connect('amqp://localhost', function(err, conn) {
         conn.createChannel(function(err, ch) {
             var mq = 'OutboundCommunication_audit';
             ch.assertQueue(mq, { durable: false });
@@ -111,31 +112,36 @@ function addMsgOntoQueue(outbound){
 }
 
 
-function sendEmail(){
-    
+function sendEmail() {
+
     var request = require("request");
-var test = "Basic " +process.env.APIKEY;
-var options = { method: 'POST',
-  url: 'https://api.mailjet.com/v3.1/send',
-  headers: 
-   { 'Postman-Token': '1078ab89-b4e0-405e-8e35-b50fb8c6d793',
-     'cache-control': 'no-cache',
-     Authorization: test,
-     'Content-Type': 'application/json' },
-  body: 
-   { Messages: 
-      [ { From: { Email: 'info@hammsolutions.co.uk', Name: 'Me' },
-          To: [ { Email: 'julianhamm1@gmail.com', Name: 'You' } ],
-          Subject: 'My first Mailjet Email!',
-          TextPart: 'Greetings from Mailjet!',
-          HTMLPart: '<h3>Dear passenger 1, welcome to <a href="https://www.mailjet.com/">Mailjet!</a></h3><br />May the delivery force be with you!' } ] },
-  json: true };
+    var test = "Basic " + process.env.APIKEY;
+    var options = {
+        method: 'POST',
+        url: 'https://api.mailjet.com/v3.1/send',
+        headers: {
+            'Postman-Token': '1078ab89-b4e0-405e-8e35-b50fb8c6d793',
+            'cache-control': 'no-cache',
+            Authorization: test,
+            'Content-Type': 'application/json'
+        },
+        body: {
+            Messages: [{
+                From: { Email: 'info@hammsolutions.co.uk', Name: 'Me' },
+                To: [{ Email: 'julianhamm1@gmail.com', Name: 'You' }],
+                Subject: 'My first Mailjet Email!',
+                TextPart: 'Greetings from Mailjet!',
+                HTMLPart: '<h3>Dear passenger 1, welcome to <a href="https://www.mailjet.com/">Mailjet!</a></h3><br />May the delivery force be with you!'
+            }]
+        },
+        json: true
+    };
 
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
+    request(options, function(error, response, body) {
+        if (error) throw new Error(error);
 
-  console.log(body);
-});
+        console.log(body);
+    });
 
 }
 

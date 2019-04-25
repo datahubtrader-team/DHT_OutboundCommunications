@@ -18,9 +18,12 @@
   "homepage": "https://github.com/datahubtrader-team/DHT_OutboundCommunications#readme",
   "dependencies": {
     "dotenv": "^7.0.0",
+    "json-writer": "^1.0.2",
+    "logger": "0.0.1",
     "opn": "^6.0.0",
     "request": "^2.88.0",
     "rest-facade": "^1.11.0",
-    "swagger-ui-express": "^4.0.2"
+    "swagger-ui-express": "^4.0.2",
+    "twilio": "^3.30.2"
   }
 }

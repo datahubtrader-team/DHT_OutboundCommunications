@@ -6,7 +6,18 @@ var amqp = require('amqplib/callback_api');
 var rest = require('rest-facade');
 require('dotenv').config()
 
+// Logger lib
+var logger = require('../../node_modules/logger').createLogger(); // logs to STDOUT
+var logger = require('../../node_modules/logger').createLogger('development.log'); // logs to a file
 
+// Queue names
+var correctQueue = "OutboundCommunication_audit";
+var errorQueue = "OutboundCommunication_error";
+
+//Cred for SMS service
+const accountSid = process.env.ACCID;
+const authToken = process.env.AUTHID;
+const client = require('twilio')(accountSid, authToken);
 
 // Create and Save a new Outbound communication
 exports.create = (req, res) => {
@@ -29,78 +40,41 @@ exports.create = (req, res) => {
 
     });
 
-
-
-
     // Save Outbound communication in the database
     outboundcommunication.save()
         .then(data => {
             res.send(data);
-            //res.end("Test");
-            addMsgOntoQueue(outboundcommunication.toString());
-            sendEmail();
-            //console.log(res.body);
+
+            if (data.email == "" || null) {
+                console.log("is empty");
+            } else {
+                if (data.number == "") {
+                    logger.error('Request doesn\'t contain a number ');
+                    console.log("Request doesn't include a number");
+                } else {
+                    SendTextMessage(data.number);
+                    logger.info('Service caller supplied a recipient number. Response: ', data.number);
+                }
+                sendEmail(data.email, data.firstName);
+                logger.info('POST outboundcommunication from service caller. Response: ', data);
+            }
+            addMsgOntoQueue(outboundcommunication.toString(), correctQueue);
+
         }).catch(err => {
             res.status(500).send({
                 message: err.message || "Some error occurred while creating the Outbound communication."
             });
+            logger.error(err.message, "Error occurred while sending an OutboundCommunication ", err);
+            addMsgOntoQueue(outboundcommunication.toString(), errorQueue);
         });
-
-
-
-
-    // var OutboundMsg = new rest.Client('http://localhost:3002/communications');
-    // OutboundMsg
-    //     .create({
-    //         firstName: req.body.firstName,
-    //         lastName: req.body.lastName,
-    //         message: req.body.message,
-    //         email: req.body.email,
-    //         service: req.body.service,
-    //         status: statusUpdate.createRequest
-    //     })
-    //     .then(function(user) {
-    //         console.log('OutboundMsg created');
-    //     });
-
-
-    // Sending email to customers
-
-
-    // var request = require("request");
-
-    // var options = {
-    //     method: 'POST',
-    //     url: 'http://localhost:3002/communications',
-    //     body: {
-    //         firstName: req.body.firstName,
-    //         lastName: req.body.lastName,
-    //         message: req.body.message,
-    //         email: req.body.email,
-    //         service: req.body.service,
-    //         status: statusUpdate.createRequest
-    //     },
-    //     json: true
-
-    // };
-
-    // console.log(options);
-
-    // request(options, function(error, response, body) {
-    //     if (error) throw new Error(error);
-
-    //     console.log(body);
-    // });
 
 };
 
-var outbound;
-
-function addMsgOntoQueue(outbound) {
+function addMsgOntoQueue(outbound, queuName) {
     //Connect to Rabbit MQ and publish msg onto the queue
     amqp.connect('amqp://localhost', function(err, conn) {
         conn.createChannel(function(err, ch) {
-            var mq = 'OutboundCommunication_audit';
+            var mq = queuName;
             ch.assertQueue(mq, { durable: false });
             ch.sendToQueue(mq, Buffer.from(outbound.toString()));
             //console.log(" [x] Sent %s", outboundcommunication._id.toString());
@@ -111,8 +85,8 @@ function addMsgOntoQueue(outbound) {
     });
 }
 
-
-function sendEmail() {
+//TODO: Move this code into a separate folder
+function sendEmail(RecipientEmail, name) {
 
     var request = require("request");
     var test = "Basic " + process.env.APIKEY;
@@ -120,15 +94,14 @@ function sendEmail() {
         method: 'POST',
         url: 'https://api.mailjet.com/v3.1/send',
         headers: {
-            'Postman-Token': '1078ab89-b4e0-405e-8e35-b50fb8c6d793',
             'cache-control': 'no-cache',
             Authorization: test,
             'Content-Type': 'application/json'
         },
         body: {
             Messages: [{
-                From: { Email: 'info@hammsolutions.co.uk', Name: 'Me' },
-                To: [{ Email: 'julianhamm1@gmail.com', Name: 'You' }],
+                From: { Email: process.env.HSEMAIL, Name: name },
+                To: [{ Email: RecipientEmail, Name: name }],
                 Subject: 'My first Mailjet Email!',
                 TextPart: 'Greetings from Mailjet!',
                 HTMLPart: '<h3>Dear passenger 1, welcome to <a href="https://www.mailjet.com/">Mailjet!</a></h3><br />May the delivery force be with you!'
@@ -143,6 +116,17 @@ function sendEmail() {
         console.log(body);
     });
 
+}
+
+//TODO: Move this code into a separate folder
+function SendTextMessage(number) {
+    client.messages
+        .create({
+            body: 'From Data Hub Trader\'s OutboundCommunication service',
+            from: '+447588691816',
+            to: number
+        })
+        .then(message => console.log(message.sid));
 }
 
 // Retrieve and return all Outbound communications from the database.
@@ -190,8 +174,6 @@ exports.update = (req, res) => {
 
     // Find outboundcommunication and update it with the request body
     OutboundCommunication.findByIdAndUpdate(req.params.outboundcommunicationId, {
-            //title: req.body.title || "Untitled OutboundCommunication",
-            //content: req.body.content
             firstName: req.body.firstName || "Unknown firstName",
             lastName: req.body.lastName,
             message: req.body.message,

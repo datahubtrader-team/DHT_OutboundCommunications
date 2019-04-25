@@ -25,7 +25,7 @@ make run-all
 ```
 
 ## Run the outboundcommunication API
-**You can browse the api at:** <http://localhost:5000>
+**You can browse the API at:** <http://localhost:5000>
 
 Here are the following API endpoints:
 

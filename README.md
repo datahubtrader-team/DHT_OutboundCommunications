@@ -24,7 +24,7 @@ node server.js
 make run-all
 ```
 
-## Run the outboundcommunication API
+## Run the Outboundcommunication API
 **You can browse the API at:** <http://localhost:5000>
 
 Here are the following API endpoints:

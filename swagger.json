@@ -2,11 +2,11 @@
     "swagger": "2.0",
     "info": {
         "version": "1.0.0",
-        "title": "Contact service",
-        "description": "This service handles contacts through the use of the contact API and persist the data into a MongoDB storage",
+        "title": "OutboundCommunications service",
+        "description": "This service handles sending outbound communications to users through the use of the outboundcommunication API and persisting that data into MongoDB storage",
         "license": {
-            "name": "MIT",
-            "url": "https://opensource.org/licenses/MIT"
+            "name": "DrJay",
+            "url": "julianhamm.co.uk"
         }
     },
     "host": "localhost:5000",

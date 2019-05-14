@@ -32,7 +32,24 @@ mongoose.connect(dbConfig.url, {
 
 // define a simple route
 app.get('/', (req, res) => {
-    res.json({ "message": "Welcome to Contact service. Creating a new outboundcommunication. Organise and and store cusotmer outboundcommunication details." });
+    res.json({ "message": "Welcome to the Outbound communications service. Sending outbound communications to Customers via Email, SMS or WhatsApp. Organise and and store cusotmer outbound communication details." });
+});
+
+//TODO: Write a function to check status of DB and network and then return OK status: https://github.com/deadlysyn/node-healthcheck/blob/master/app.js
+
+// define a simple route
+app.get('/healthcheck', (req, res) => {
+    var mongojs = require('mongojs')
+    var db = mongojs(dbConfig.url, ['outboundcommunication'])
+
+    db.on('error', function(err) {
+        console.log('database error', err)
+    })
+
+    db.on('connect', function() {
+        console.log('database connected')
+    })
+    res.json({ status: 'UP' });
 });
 
 require('./app/routes/outboundcommunication.routes.js')(app);
@@ -47,7 +64,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 opn('http://localhost:5000/api-docs')
 
+
+let { nextAvailable } = require('node-port-check');
 // listen for requests
-app.listen(5000, () => {
-    console.log("Server is listening on port 5000");
+var server = app.listen(5000, () => {
+    console.log("Server is listening on port " + server.address().port);
+    //TODO: Check if current port is occupied and if so reassign the server to the next available port: https://www.npmjs.com/package/node-port-check
+
 });

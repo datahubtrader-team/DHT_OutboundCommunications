@@ -86,6 +86,7 @@ function addMsgOntoQueue(outbound, queuName) {
 }
 
 //TODO: Move this code into a separate folder
+//TODO: Create a folder to contain email templates
 function sendEmail(RecipientEmail, name) {
 
     var request = require("request");
@@ -104,7 +105,7 @@ function sendEmail(RecipientEmail, name) {
                 To: [{ Email: RecipientEmail, Name: name }],
                 Subject: 'My first Mailjet Email!',
                 TextPart: 'Greetings from Mailjet!',
-                HTMLPart: '<h3>Dear passenger 1, welcome to <a href="https://www.mailjet.com/">Mailjet!</a></h3><br />May the delivery force be with you!'
+                HTMLPart: '<h3>Dear ' + name + ', welcome to <a href="https://www.mailjet.com/">Mailjet!</a></h3><br />May the delivery force be with you!'
             }]
         },
         json: true
@@ -118,12 +119,12 @@ function sendEmail(RecipientEmail, name) {
 
 }
 
-//TODO: Move this code into a separate folder
+//TODO: Move this code into a separate folder structure
 function SendTextMessage(number) {
     client.messages
         .create({
             body: 'From Data Hub Trader\'s OutboundCommunication service',
-            from: '+447588691816',
+            from: process.env.DHTNUMBER,
             to: number
         })
         .then(message => console.log(message.sid));

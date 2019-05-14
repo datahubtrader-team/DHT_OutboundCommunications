@@ -1,29 +1,45 @@
 {
-  "name": "dht_outboundcommunications",
-  "version": "1.0.0",
-  "description": "This service deals with sending outbound communications to customers.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/datahubtrader-team/DHT_OutboundCommunications.git"
-  },
-  "author": "DrJay",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/datahubtrader-team/DHT_OutboundCommunications/issues"
-  },
-  "homepage": "https://github.com/datahubtrader-team/DHT_OutboundCommunications#readme",
-  "dependencies": {
-    "dotenv": "^7.0.0",
-    "json-writer": "^1.0.2",
-    "logger": "0.0.1",
-    "opn": "^6.0.0",
-    "request": "^2.88.0",
-    "rest-facade": "^1.11.0",
-    "swagger-ui-express": "^4.0.2",
-    "twilio": "^3.30.2"
-  }
+    "name": "dht_outboundcommunications",
+    "version": "1.0.0",
+    "description": "This service deals with sending outbound communications to customers.",
+    "main": "server.js",
+    "scripts": {
+        "test": "mocha"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/datahubtrader-team/DHT_OutboundCommunications.git"
+    },
+    "author": "DrJay",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/datahubtrader-team/DHT_OutboundCommunications/issues"
+    },
+    "homepage": "https://github.com/datahubtrader-team/DHT_OutboundCommunications#readme",
+    "dependencies": {
+        "aws-sdk": "^2.448.0",
+        "axios": "^0.18.0",
+        "convert-csv-to-json": "0.0.14",
+        "csvtojson": "^2.0.8",
+        "dotenv": "^7.0.0",
+        "fs": "0.0.1-security",
+        "json-writer": "^1.0.2",
+        "jsonfile": "^5.0.0",
+        "logger": "0.0.1",
+        "mongojs": "^2.6.0",
+        "multer": "^1.4.1",
+        "multer-s3": "^2.9.0",
+        "nock": "^10.0.6",
+        "node-port-check": "^2.0.1",
+        "opn": "^6.0.0",
+        "request": "^2.88.0",
+        "rest-facade": "^1.11.0",
+        "supertest": "^4.0.2",
+        "swagger-ui-express": "^4.0.2",
+        "twilio": "^3.30.2"
+    },
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "mocha": "^6.1.4"
+    }
 }

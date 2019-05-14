@@ -1,7 +1,8 @@
 {
   "files.exclude": {
     ".env": "explorerExcludedFiles",
-    "node_modules/": "explorerExcludedFiles",
-    ".vscode/": "explorerExcludedFiles"
+    "node_modules": "explorerExcludedFiles",
+    ".vscode": "explorerExcludedFiles",
+    "test": "explorerExcludedFiles"
   }
 }

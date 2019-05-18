@@ -3,6 +3,8 @@
     ".env": "explorerExcludedFiles",
     "node_modules": "explorerExcludedFiles",
     ".vscode": "explorerExcludedFiles",
-    "test": "explorerExcludedFiles"
+    "test": "explorerExcludedFiles",
+    "package-lock.json": "explorerExcludedFiles",
+    "contract": "explorerExcludedFiles"
   }
 }

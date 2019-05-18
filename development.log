@@ -1,0 +1,40 @@
+
+error [Fri May 17 2019 12:52:17 GMT+0100 (British Summer Time)]  Request doesn't contain a number 
+info [Fri May 17 2019 12:52:17 GMT+0100 (British Summer Time)]  POST outboundcommunication from service caller. Response:  {
+  _id: 5cdea071771851a23273caa9,
+  firstName: 'Peter Jones',
+  lastName: 'Hamm',
+  message: 'This is a test',
+  email: 'julianhamm1@gmail.com',
+  number: '',
+  status: 'createRequest',
+  createdAt: 2019-05-17T11:52:17.472Z,
+  updatedAt: 2019-05-17T11:52:17.472Z,
+  __v: 0
+}
+error [Fri May 17 2019 12:53:08 GMT+0100 (British Summer Time)]  Request doesn't contain a number 
+info [Fri May 17 2019 12:53:08 GMT+0100 (British Summer Time)]  POST outboundcommunication from service caller. Response:  {
+  _id: 5cdea0a4771851a23273caaa,
+  firstName: 'Rusell',
+  lastName: 'Hamm',
+  message: 'This is a test',
+  email: 'julianhamm1@gmail.com',
+  number: '',
+  status: 'createRequest',
+  createdAt: 2019-05-17T11:53:08.388Z,
+  updatedAt: 2019-05-17T11:53:08.388Z,
+  __v: 0
+}
+error [Sat May 18 2019 00:13:37 GMT+0100 (British Summer Time)]  Request doesn't contain a number 
+info [Sat May 18 2019 00:13:37 GMT+0100 (British Summer Time)]  POST outboundcommunication from service caller. Response:  {
+  _id: 5cdf4021771851a23273caab,
+  firstName: '3',
+  lastName: 'Hamm',
+  message: 'This is a test',
+  email: '3',
+  number: '',
+  status: 'createRequest',
+  createdAt: 2019-05-17T23:13:37.561Z,
+  updatedAt: 2019-05-17T23:13:37.561Z,
+  __v: 0
+}

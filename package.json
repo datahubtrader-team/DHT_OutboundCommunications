@@ -4,7 +4,8 @@
     "description": "This service deals with sending outbound communications to customers.",
     "main": "server.js",
     "scripts": {
-        "test": "mocha"
+        "test": "mocha test",
+        "start": "node server.js"
     },
     "repository": {
         "type": "git",

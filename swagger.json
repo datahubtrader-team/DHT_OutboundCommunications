@@ -12,7 +12,7 @@
     "host": "localhost:5000",
     "basePath": "/",
     "tags": [{
-        "name": "Contacts API",
+        "name": "OutboundCommunications API",
         "description": ""
     }],
     "schemes": [
@@ -25,16 +25,16 @@
         "application/json"
     ],
     "paths": {
-        "/contacts": {
+        "/outboundcommunications": {
             "post": {
                 "tags": [
-                    "Create a new contact"
+                    "Create a new communication"
                 ],
-                "description": "Create new contact in service",
+                "description": "Create new communication in service",
                 "parameters": [{
-                    "name": "contact",
+                    "name": "outboundcommunication",
                     "in": "body",
-                    "description": "Contact that we want to create",
+                    "description": "Outboundcommunication that we want to create",
                     "schema": {
                         "$ref": "#/definitions/Contact"
                     }

@@ -1,7 +1,10 @@
 const OutboundCommunication = require('../models/outboundcommunication.model.js');
 const statusUpdate = require('../Enums/enum.js');
 
+//Rabbit MQ lib
 var amqp = require('amqplib/callback_api');
+
+const sendemail = require('../mailjet.ApiClient/mailjet.apiclient.js');
 
 var rest = require('rest-facade');
 require('dotenv').config()
@@ -55,7 +58,8 @@ exports.create = (req, res) => {
                     SendTextMessage(data.number);
                     logger.info('Service caller supplied a recipient number. Response: ', data.number);
                 }
-                sendEmail(data.email, data.firstName);
+                sendemail.sendEmail(data.email, data.firstName);
+                // sendEmail(data.email, data.firstName);
                 logger.info('POST outboundcommunication from service caller. Response: ', data);
             }
             addMsgOntoQueue(outboundcommunication.toString(), correctQueue);
@@ -83,40 +87,6 @@ function addMsgOntoQueue(outbound, queuName) {
             conn.close();
         }, 500);
     });
-}
-
-//TODO: Move this code into a separate folder
-//TODO: Create a folder to contain email templates
-function sendEmail(RecipientEmail, name) {
-
-    var request = require("request");
-    var test = "Basic " + process.env.APIKEY;
-    var options = {
-        method: 'POST',
-        url: 'https://api.mailjet.com/v3.1/send',
-        headers: {
-            'cache-control': 'no-cache',
-            Authorization: test,
-            'Content-Type': 'application/json'
-        },
-        body: {
-            Messages: [{
-                From: { Email: process.env.HSEMAIL, Name: name },
-                To: [{ Email: RecipientEmail, Name: name }],
-                Subject: 'My first Mailjet Email!',
-                TextPart: 'Greetings from Mailjet!',
-                HTMLPart: '<h3>Dear ' + name + ', welcome to <a href="https://www.mailjet.com/">Mailjet!</a></h3><br />May the delivery force be with you!'
-            }]
-        },
-        json: true
-    };
-
-    request(options, function(error, response, body) {
-        if (error) throw new Error(error);
-
-        console.log(body);
-    });
-
 }
 
 //TODO: Move this code into a separate folder structure

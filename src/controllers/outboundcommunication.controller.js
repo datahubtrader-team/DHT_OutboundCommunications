@@ -1,17 +1,17 @@
 const OutboundCommunication = require('../models/outboundcommunication.model.js');
-const statusUpdate = require('../Enums/enum.js');
+const statusUpdate = require('../constants/enum.js');
 
 //Rabbit MQ lib
 var amqp = require('amqplib/callback_api');
 
-const sendemail = require('../mailjet.ApiClient/mailjet.apiclient.js');
+const sendemail = require('../lib/mailjet.ApiClient/mailjet.apiclient.js');
 
 var rest = require('rest-facade');
 require('dotenv').config()
 
 // Logger lib
-var logger = require('../../node_modules/logger').createLogger(); // logs to STDOUT
-var logger = require('../../node_modules/logger').createLogger('development.log'); // logs to a file
+var logger = require('logger').createLogger(); // logs to STDOUT
+var logger = require('logger').createLogger('development.log'); // logs to a file
 
 // Queue names
 var correctQueue = "OutboundCommunication_audit";

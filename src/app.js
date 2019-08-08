@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Configuring the database
-const dbConfig = require('./config/database.config.js');
+const dbConfig = require('../config/database.config');
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
@@ -52,7 +52,7 @@ app.get('/healthcheck', (req, res) => {
     res.json({ status: 'UP' });
 });
 
-require('./app/routes/outboundcommunication.routes.js')(app);
+require('./routes/outboundcommunication.routes.js')(app);
 
 app.all('', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

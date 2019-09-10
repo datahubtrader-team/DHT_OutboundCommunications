@@ -18,6 +18,8 @@ app.use(bodyParser.json())
 const dbConfig = require('../config/database.config');
 const mongoose = require('mongoose');
 
+const db = require('../config');
+
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
@@ -72,3 +74,6 @@ var server = app.listen(5000, () => {
     //TODO: Check if current port is occupied and if so reassign the server to the next available port: https://www.npmjs.com/package/node-port-check
 
 });
+
+db.init();
+db.connect("mongodb://localhost:27017/outboundcommunication");

@@ -22,56 +22,72 @@ const accountSid = process.env.ACCID;
 const authToken = process.env.AUTHID;
 const client = require('twilio')(accountSid, authToken);
 
+// Validation lib
+const validateOutboundBody = require('../middleware/outboundSchemaValidator.js')
+
 // Create and Save a new Outbound communication
 exports.create = (req, res) => {
+
     // Validate request
     if (!req.body.message) {
-        return res.status(400).send({
-            message: "Outbound communication msg content can not be empty"
-        });
+        return res.status(400).json({
+            message: 'Outbound communication msg content can not be empty',
+            data: req.body
+        })
     }
-    res.status(201);
 
-    // Create an Outbound communication
-    var outboundcommunication = new OutboundCommunication({
-        firstName: req.body.firstName || "Unknown firstName",
-        lastName: req.body.lastName,
-        message: req.body.message,
-        email: req.body.email,
-        number: req.body.number,
-        status: statusUpdate.createRequest
+    const result = validateOutboundBody.validateOutboundSchema(req.body);
+    const { value, error } = result;
+    const valid = error == null;
 
-    });
+    if (!valid) {
+        res.status(400).json({
+            message: 'Invalid request',
+            data: req.body
+        })
+    } else {
+        res.status(201);
 
-    // Save Outbound communication in the database
-    outboundcommunication.save()
-        .then(data => {
-            res.send(data);
+        // Create an Outbound communication
+        var outboundcommunication = new OutboundCommunication({
+            firstName: req.body.firstName || "Unknown firstName",
+            lastName: req.body.lastName,
+            message: req.body.message,
+            email: req.body.email,
+            number: req.body.number,
+            status: statusUpdate.createRequest
 
-            if (data.email == "" || null) {
-                console.log("is empty");
-            } else {
-                if (data.number == "") {
-                    logger.error('Request doesn\'t contain a number ');
-                    console.log("Request doesn't include a number");
-                } else {
-                    SendTextMessage(data.number);
-                    logger.info('Service caller supplied a recipient number. Response: ', data.number);
-                }
-                sendemail.sendEmail(data.email, data.firstName);
-                // sendEmail(data.email, data.firstName);
-                logger.info('POST outboundcommunication from service caller. Response: ', data);
-            }
-            addMsgOntoQueue(outboundcommunication.toString(), correctQueue);
-
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while creating the Outbound communication."
-            });
-            logger.error(err.message, "Error occurred while sending an OutboundCommunication ", err);
-            addMsgOntoQueue(outboundcommunication.toString(), errorQueue);
         });
 
+        // Save Outbound communication in the database
+        outboundcommunication.save()
+            .then(data => {
+                res.send(data);
+
+                if (data.email == "" || null) {
+                    console.log("is empty");
+                } else {
+                    if (data.number == "") {
+                        logger.error('Request doesn\'t contain a number ');
+                        console.log("Request doesn't include a number");
+                    } else {
+                        SendTextMessage(data.number);
+                        logger.info('Service caller supplied a recipient number. Response: ', data.number);
+                    }
+                    sendemail.sendEmail(data.email, data.firstName);
+                    // sendEmail(data.email, data.firstName);
+                    logger.info('POST outboundcommunication from service caller. Response: ', data);
+                }
+                addMsgOntoQueue(outboundcommunication.toString(), correctQueue);
+
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message || "Some error occurred while creating the Outbound communication."
+                });
+                logger.error(err.message, "Error occurred while sending an OutboundCommunication ", err);
+                addMsgOntoQueue(outboundcommunication.toString(), errorQueue);
+            });
+    }
 };
 
 function addMsgOntoQueue(outbound, queuName) {

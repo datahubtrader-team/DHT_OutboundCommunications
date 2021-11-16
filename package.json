@@ -20,7 +20,7 @@
     "dependencies": {
         "@hapi/joi": "^15.1.1",
         "@shelf/jest-mongodb": "^1.1.0",
-        "aws-sdk": "^2.448.0",
+        "aws-sdk": "^2.814.0",
         "axios": "^0.18.0",
         "chai-http": "^4.3.0",
         "convert-csv-to-json": "0.0.14",

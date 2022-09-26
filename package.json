@@ -40,7 +40,7 @@
         "opn": "^6.0.0",
         "regenerator-runtime": "^0.13.3",
         "request": "^2.88.0",
-        "rest-facade": "^1.11.0",
+        "rest-facade": "^1.16.3",
         "supertest": "^4.0.2",
         "swagger-ui-express": "^4.0.2",
         "twilio": "^3.30.2"
